@@ -98,7 +98,7 @@ window.WEDDING_CONFIG = {
       title: 'Λίστα δώρων από καταστήματα',
       description:
         'Πατήστε πρώτα "Δέσμευση δώρου" και μετά ανοίξτε το κατάστημα. Μόλις δεσμευτεί ένα αντικείμενο, δεν θα είναι διαθέσιμο για άλλον επισκέπτη.',
-      endpoint: '',
+      endpoint: 'https://script.google.com/macros/s/AKfycbxSy66KdPB5XFveiCMFln0mjVR8JmoaGjyS4ELfgq3AcVvtQdLmMhKR2ZFMSmDyZPO7/exec',
       fallbackMode: 'local',
       successMessage: 'Το δώρο δεσμεύτηκε επιτυχώς. Μπορείτε τώρα να ανοίξετε το κατάστημα.',
       items: [
