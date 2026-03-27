@@ -20,6 +20,7 @@ wedding-microsite/
 ├── styles.css
 ├── app.js
 ├── config.js
+├── gift-registry-data.js
 ├── README.md
 ├── assets/
 │   └── icons/
@@ -74,8 +75,10 @@ rsvp: {
 - δέσμευση δώρου από το site
 - κλείδωμα αντικειμένου ώστε να μην το πάρει δεύτερος επισκέπτης
 - live sync όταν συνδεθεί backend endpoint
+- προαιρετικό remote catalog από Google Sheet
+- προαιρετικό refresh τιμών από τα product pages
 
-Τα βασικά πεδία είναι στο [config.js](/c:/Users/manos/Downloads/wedding-microsite-project/wedding-microsite/config.js) μέσα στο `gift.registry`.
+Τα βασικά πεδία της ενότητας είναι στο [config.js](/c:/Users/manos/Downloads/wedding-microsite-project/wedding-microsite/config.js) μέσα στο `gift.registry`, ενώ τα ίδια τα προϊόντα είναι πλέον στο [gift-registry-data.js](/c:/Users/manos/Downloads/wedding-microsite-project/wedding-microsite/gift-registry-data.js).
 
 Παράδειγμα:
 
@@ -89,28 +92,36 @@ gift: {
     title: 'Λίστα δώρων από καταστήματα',
     description: 'Πατήστε πρώτα δέσμευση και μετά ανοίξτε το κατάστημα.',
     endpoint: '',
+    catalogMode: 'local',
     fallbackMode: 'local',
     successMessage: 'Το δώρο δεσμεύτηκε επιτυχώς.',
-    items: [
-      {
-        id: 'espresso-machine',
-        title: 'Μηχανή espresso',
-        store: 'Kotsovolos',
-        price: '€249',
-        category: 'Κουζίνα',
-        url: 'https://www.kotsovolos.gr/...',
-        description: 'Το ακριβές προϊόν που θέλετε',
-      },
-    ],
+    items: window.WEDDING_GIFT_REGISTRY_ITEMS || [],
   },
 }
 ```
 
+Και στο `gift-registry-data.js`:
+
+```js
+window.WEDDING_GIFT_REGISTRY_ITEMS = [
+  {
+    id: 'espresso-machine',
+    title: 'Μηχανή espresso',
+    store: 'Kotsovolos',
+    price: '€249',
+    category: 'Κουζίνα',
+    url: 'https://www.kotsovolos.gr/...',
+    description: 'Το ακριβές προϊόν που θέλετε',
+  },
+];
+```
+
 ### Τι αλλάζετε εσείς
 
-1. Βάζετε τα δικά σας προϊόντα στο `gift.registry.items`
+1. Βάζετε τα δικά σας προϊόντα στο `gift-registry-data.js`
 2. Βάζετε τα ακριβή links των καταστημάτων στο `url`
 3. Βάζετε το backend URL στο `gift.registry.endpoint`
+4. Αν θέλετε διαχείριση από Google Sheet, αλλάζετε το `gift.registry.catalogMode` σε `'remote'`
 
 ### Demo mode
 
@@ -126,6 +137,7 @@ gift: {
 
 Η λογική είναι:
 
+- τα δώρα μπορούν να έρχονται είτε από local αρχείο είτε από Google Sheet
 - ο επισκέπτης δεσμεύει το δώρο
 - το backend το μαρκάρει ως `reserved`
 - οι υπόλοιποι το βλέπουν ως μη διαθέσιμο
@@ -137,12 +149,14 @@ gift: {
 
 ## Σημαντικός περιορισμός
 
-Τα εξωτερικά καταστήματα συνήθως δεν δίνουν εύκολο API για να μάθει αυτόματα το site αν ολοκληρώθηκε checkout.
+Τα εξωτερικά καταστήματα συνήθως δεν δίνουν εύκολο public API για πλήρη συγχρονισμό checkout ή τιμών.
 
 Για αυτό η ασφαλής πρακτική εδώ είναι:
 
+- Google Sheet σαν source of truth για τη λίστα
 - πρώτα δέσμευση στο microsite
 - μετά άνοιγμα του store link
+- auto refresh τιμής μόνο όπου το product page εκθέτει καθαρά την τιμή
 
 Αυτό αποτρέπει πρακτικά τις διπλές αγορές, χωρίς να απαιτεί δική σας custom υποδομή e-commerce.
 
