@@ -2,6 +2,6 @@ name = "weddingsite"
 compatibility_date = "2026-07-02"
 
 [assets]
-directory = "./public"
+directory = "."
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
