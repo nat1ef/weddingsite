@@ -1,0 +1,13 @@
+{
+  "name": "weddingsite",
+  "private": true,
+  "scripts": {
+    "prepare:public": "node scripts/prepare-public.mjs",
+    "dev": "npm run prepare:public && wrangler dev",
+    "deploy": "npm run prepare:public && wrangler deploy",
+    "preview": "npm run prepare:public && wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.106.0"
+  }
+}
